@@ -1,3 +1,7 @@
+// ignore_for_file: unnecessary_null_comparison
+
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/product.dart';
@@ -22,20 +26,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   var _isInit = true;
 
+  var _editedProduct = Product(
+    id: null as String,
+    title: '',
+    description: '',
+    price: 0,
+    imageUrl: '',
+  );
+
   var _initValues = {
     'title': '',
     'description': '',
     'price': '',
     'imageUrl': '',
   };
-
-  var _editedProduct = Product(
-    id: null.toString(),
-    title: '',
-    description: '',
-    price: 0,
-    imageUrl: '',
-  );
 
   @override
   void initState() {
@@ -46,8 +50,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      final productId = ModalRoute.of(context)!.settings.arguments as String;
-      // ignore: unnecessary_null_comparison
+      final productId = ModalRoute.of(context)!.settings.arguments.toString();
       if (productId != null)
         _editedProduct =
             Provider.of<Products>(context, listen: false).findById(productId);
@@ -93,7 +96,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState!.save();
-    // ignore: unnecessary_null_comparison
+
     if (_editedProduct.id != null) {
       Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);

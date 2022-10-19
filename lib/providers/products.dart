@@ -73,7 +73,7 @@ class Products with ChangeNotifier {
       id: DateTime.now().toString(),
     );
     _items.add(newProd);
-    _items.insert(0, newProd);
+    // _items.insert(0, newProd);
     notifyListeners();
   }
 
@@ -83,7 +83,12 @@ class Products with ChangeNotifier {
       _items[prodIndex] = newProduct;
       notifyListeners();
     } else {
-      print('....');
+      print('...');
     }
+  }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
   }
 }
