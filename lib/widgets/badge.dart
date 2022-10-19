@@ -25,6 +25,7 @@ class Badge extends StatelessWidget {
             // color: Theme.of(context).accentColor,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
+              // ignore: unnecessary_null_comparison
               color: color != null
                   ? color
                   : Theme.of(context).colorScheme.secondary,
