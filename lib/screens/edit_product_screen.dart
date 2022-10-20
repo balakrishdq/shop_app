@@ -1,7 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/product.dart';
@@ -24,13 +22,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   final _imageController = TextEditingController();
 
-  var _isInit = true;
-
   var _editedProduct = Product(
-    id: null as String,
+    id: null,
     title: '',
-    description: '',
     price: 0,
+    description: '',
     imageUrl: '',
   );
 
@@ -40,6 +36,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     'price': '',
     'imageUrl': '',
   };
+
+  var _isInit = true;
 
   @override
   void initState() {
@@ -51,17 +49,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void didChangeDependencies() {
     if (_isInit) {
       final productId = ModalRoute.of(context)!.settings.arguments.toString();
-      if (productId != null)
+      if (productId != null.toString())
         _editedProduct =
             Provider.of<Products>(context, listen: false).findById(productId);
       _initValues = {
-        'title': _editedProduct.title,
-        'description': _editedProduct.description,
+        'title': _editedProduct.title!,
+        'description': _editedProduct.description!,
         'price': _editedProduct.price.toString(),
         // 'imageUrl': _editedProduct.imageUrl,
         'imageUrl': ''
       };
-      _imageController.text = _editedProduct.imageUrl;
+      _imageController.text = _editedProduct.imageUrl!;
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -99,7 +97,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
     if (_editedProduct.id != null) {
       Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct.id, _editedProduct);
+          .updateProduct(_editedProduct.id!, _editedProduct);
     } else {
       Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
     }

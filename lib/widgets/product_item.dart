@@ -27,7 +27,7 @@ class ProductItem extends StatelessWidget {
             );
           },
           child: Image.network(
-            product.imageUrl,
+            product.imageUrl!,
             fit: BoxFit.cover,
           ),
         ),
@@ -45,7 +45,7 @@ class ProductItem extends StatelessWidget {
             ),
           ),
           title: Text(
-            product.title,
+            product.title!,
             textAlign: TextAlign.center,
           ),
           trailing: IconButton(
@@ -53,7 +53,7 @@ class ProductItem extends StatelessWidget {
               Icons.shopping_cart,
             ),
             onPressed: () {
-              cart.addItem(product.id, product.price, product.title);
+              cart.addItem(product.id!, product.price!, product.title!);
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -62,7 +62,7 @@ class ProductItem extends StatelessWidget {
                   action: SnackBarAction(
                       label: 'UNDO',
                       onPressed: () {
-                        cart.removeSingleItem(product.id);
+                        cart.removeSingleItem(product.id!);
                       }),
                 ),
               );
