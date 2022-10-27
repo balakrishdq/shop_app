@@ -2,8 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/models/http_exception.dart';
-import 'package:shop_app/providers/auth.dart';
+
+import '../providers/auth.dart';
+import '../models/http_exception.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -105,18 +106,20 @@ class _AuthCardState extends State<AuthCard> {
 
   void _showErrorDialog(String message) {
     showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              title: Text('An error Occured'),
-              content: Text(message),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Okay'))
-              ],
-            ));
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('An Error Occurred!'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      ),
+    );
   }
 
   Future<void> _submit() async {
@@ -143,22 +146,23 @@ class _AuthCardState extends State<AuthCard> {
         );
       }
     } on HttpException catch (error) {
-      var errorMsg = 'Authentication Failed';
+      var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMsg = 'This email address is already in use.';
+        errorMessage = 'This email address is already in use.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMsg = 'This is not a valid email address';
+        errorMessage = 'This is not a valid email address';
       } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMsg = 'This password is too weak';
+        errorMessage = 'This password is too weak.';
       } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMsg = 'Could not find email like this.';
+        errorMessage = 'Could not find a user with that email.';
       } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMsg = 'Invalid Password';
+        errorMessage = 'Invalid password.';
       }
-      _showErrorDialog(errorMsg);
+      _showErrorDialog(errorMessage);
     } catch (error) {
-      var errorMsg = 'Could not authenticate you. Please try again later';
-      _showErrorDialog(errorMsg);
+      const errorMessage =
+          'Could not authenticate you. Please try again later.';
+      _showErrorDialog(errorMessage);
     }
 
     setState(() {
@@ -218,6 +222,7 @@ class _AuthCardState extends State<AuthCard> {
                     if (value!.isEmpty || value.length < 5) {
                       return 'Password is too short!';
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     _authData['password'] = value!;
@@ -233,6 +238,7 @@ class _AuthCardState extends State<AuthCard> {
                             if (value != _passwordController.text) {
                               return 'Passwords do not match!';
                             }
+                            return null;
                           }
                         : null,
                   ),
@@ -242,32 +248,35 @@ class _AuthCardState extends State<AuthCard> {
                 if (_isLoading)
                   CircularProgressIndicator()
                 else
-                  TextButton(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 30.0,
-                        vertical: 8.0,
-                      ),
-                      child: Text(
-                          _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                    ),
-                    onPressed: _submit,
-
-                    // padding:
-                    //     EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                  ),
-                TextButton(
-                  child: Padding(
+                  Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 30.0,
-                      vertical: 4,
+                      vertical: 8.0,
                     ),
-                    child: Text(
-                        '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                    child: ElevatedButton(
+                      child: Text(
+                        _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: _submit,
+                    ),
                   ),
-                  onPressed: _switchAuthMode,
-                  // padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
-                  // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 8.0,
+                  ),
+                  child: TextButton(
+                    child: Text(
+                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: _switchAuthMode,
+                  ),
                 ),
               ],
             ),

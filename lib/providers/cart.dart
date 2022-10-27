@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 
 class CartItem {
@@ -6,6 +5,7 @@ class CartItem {
   final String title;
   final int quantity;
   final double price;
+
   CartItem({
     required this.id,
     required this.title,
@@ -78,8 +78,8 @@ class Cart with ChangeNotifier {
           (existingCartItem) => CartItem(
                 id: existingCartItem.id,
                 title: existingCartItem.title,
-                quantity: existingCartItem.quantity - 1,
                 price: existingCartItem.price,
+                quantity: existingCartItem.quantity - 1,
               ));
     } else {
       _items.remove(productId);

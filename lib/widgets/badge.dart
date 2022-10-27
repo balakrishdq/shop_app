@@ -1,15 +1,18 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 
 class Badge extends StatelessWidget {
+  const Badge({
+    Key? key,
+    required this.child,
+    required this.value,
+    required this.color,
+  }) : super(key: key);
+
   final Widget child;
   final String value;
   final Color color;
-  Badge({
-    Key? key,
-    required this.value,
-    required this.child,
-    required this.color,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,6 @@ class Badge extends StatelessWidget {
             // color: Theme.of(context).accentColor,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              // ignore: unnecessary_null_comparison
               color: color != null
                   ? color
                   : Theme.of(context).colorScheme.secondary,
