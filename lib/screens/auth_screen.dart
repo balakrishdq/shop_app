@@ -96,8 +96,8 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  AuthMode _authMode = AuthMode.Login;
-  Map<String, String> _authData = {
+  AuthMode? _authMode = AuthMode.Login;
+  Map _authData = {
     'email': '',
     'password': '',
   };
@@ -135,14 +135,14 @@ class _AuthCardState extends State<AuthCard> {
       if (_authMode == AuthMode.Login) {
         // Log user in
         await Provider.of<Auth>(context, listen: false).login(
-          _authData['email']!,
-          _authData['password']!,
+          _authData['email'],
+          _authData['password'],
         );
       } else {
         // Sign user up
         await Provider.of<Auth>(context, listen: false).signup(
-          _authData['email']!,
-          _authData['password']!,
+          _authData['email'],
+          _authData['password'],
         );
       }
     } on HttpException catch (error) {
@@ -272,7 +272,7 @@ class _AuthCardState extends State<AuthCard> {
                     child: Text(
                       '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.purple,
                       ),
                     ),
                     onPressed: _switchAuthMode,
