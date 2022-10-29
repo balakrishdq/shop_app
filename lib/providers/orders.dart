@@ -8,10 +8,10 @@ import 'package:http/http.dart' as http;
 import './cart.dart';
 
 class OrderItem {
-  final String id;
-  final double amount;
-  final List<CartItem> products;
-  final DateTime dateTime;
+  final String? id;
+  final double? amount;
+  final List<CartItem>? products;
+  final DateTime? dateTime;
 
   OrderItem({
     required this.id,
@@ -37,7 +37,7 @@ class Orders with ChangeNotifier {
         '/orders/$userId.json?auth=$authToken');
     final response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
-    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    final extractedData = json.decode(response.body) as Map;
     if (extractedData == null) {
       return;
     }

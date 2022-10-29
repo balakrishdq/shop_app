@@ -81,7 +81,7 @@ class Products with ChangeNotifier {
         '/products.json?auth=$authToken&$filterString');
     try {
       final response = await http.get(url);
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final extractedData = json.decode(response.body) as Map;
       if (extractedData == null) {
         return;
       }
@@ -163,7 +163,7 @@ class Products with ChangeNotifier {
     final url = Uri.https('shop-app-60e41-default-rtdb.firebaseio.com',
         '/products/$id.json?auth=$authToken');
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
-    Product? existingProduct = _items[existingProductIndex];
+    var existingProduct = _items[existingProductIndex];
     _items.removeAt(existingProductIndex);
     notifyListeners();
     final response = await http.delete(url);
@@ -172,6 +172,6 @@ class Products with ChangeNotifier {
       notifyListeners();
       throw HttpException('Could not delete product.');
     }
-    existingProduct = null;
+    existingProduct = null as Product;
   }
 }

@@ -14,7 +14,9 @@ import './screens/user_products_screen.dart';
 import './screens/edit_product_screen.dart';
 import './screens/auth_screen.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -25,13 +27,12 @@ class MyApp extends StatelessWidget {
           value: Auth(),
         ),
         ChangeNotifierProxyProvider<Auth, Products>(
-          create: (ctx) => Products('', '', []),
-          update: (ctx, auth, previousProducts) => Products(
+          create: (_) => Products('', '', []),
+          update: (_, auth, previousProducts) => Products(
             auth.token,
             auth.userId,
             previousProducts == null ? [] : previousProducts.items,
           ),
-          lazy: false,
         ),
         ChangeNotifierProvider.value(
           value: Cart(),
