@@ -81,7 +81,10 @@ class Products with ChangeNotifier {
         '/products.json?auth=$authToken&$filterString');
     try {
       final response = await http.get(url);
-      final extractedData = json.decode(response.body) as Map;
+      print(response.statusCode);
+      print(json.decode(json.encode(response.body)));
+      final extractedData =
+          json.decode(json.encode(response.body)) as Map<String, dynamic>;
       if (extractedData == null) {
         return;
       }
@@ -90,7 +93,8 @@ class Products with ChangeNotifier {
       // url =
       //     'https://flutter-update.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
       final favoriteResponse = await http.get(url);
-      final favoriteData = json.decode(favoriteResponse.body);
+      final favoriteData =
+          json.decode(json.encode(favoriteResponse.body)) as Map;
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
@@ -103,7 +107,6 @@ class Products with ChangeNotifier {
           imageUrl: prodData['imageUrl'],
         ));
       });
-      _items = loadedProducts;
       notifyListeners();
     } catch (error) {
       throw (error);
